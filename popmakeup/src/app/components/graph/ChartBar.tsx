@@ -10,30 +10,32 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const ChartBar = () => {
 
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const labels = ['品川本社', '札幌支社', '静岡支社', '名古屋支社', '恵比寿支社', '仙台支社', '広島支社', '福岡支社'];
 
     const data = {
       labels: labels,
       datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        //label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40 ,30],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)',
+            'rgba(232, 211, 202, 0.8)'
         ],
         borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)',
+            'rgb(189, 163, 147)'
           ],
           borderWidth: 1
         }]
@@ -41,37 +43,40 @@ const ChartBar = () => {
 
 
   const options = {
-    maintainAspectRatio: false, // アスペクト比を維持しない
-    responsive: true, // レスポンシブ
-    elements: {
-      line: {
-        borderWidth: 3
-      }
-    }
+    maintainAspectRatio: false,
+    responsive: true,
   };
 
   return (
-    <div className="flex flex-col aline-center justify-center mb-10 mb-40">
-      <div className="title flex aline-center justify-center mt-5 mb-3"
-         style={{fontSize:"18px",color:"var(--sub12)",fontWeight:"bold"}}>
-         よくがんばった！学習の進捗
+    <div className="flex flex-col aline-center justify-center mb-5">
+      <div className="title flex aline-center justify-center mb-3"
+         style={{fontSize:"18px",color:"var(--sub11)",fontWeight:"bold"}}>
+         部署別利用食数
       </div>
       <div className="BarChart"
         style={{ 
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '45vh',
-          width: '70vh',
+          height: '30vh',
+          width: '123vh',
           padding: '10px 20px',
           marginTop: '10px',
-          backgroundColor: 'var(--sub11)',
+          backgroundColor: 'var(--sub10)',
           borderRadius: '10px',
-          border: '3px solid var(--sub3)', 
           boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
         }}>
-
+      <div className="BarChart"
+        style={{ 
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '30vh',
+          width: '120vh',
+          padding :'10px 5px 10px 5px' 
+        }}>
         <Bar data={data} options={options} />
+      </div>
       </div>
     </div>
   );
