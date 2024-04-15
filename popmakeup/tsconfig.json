@@ -19,6 +19,10 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
+    },
+    "baseUrl": ".", // ルートディレクトリが基準
+    "paths": {
+      "@/context/*": ["src/app/context/*"] // `@` を使ったパスを解決
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

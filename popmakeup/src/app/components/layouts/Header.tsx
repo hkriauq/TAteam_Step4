@@ -25,12 +25,12 @@ const Header = () => {
       >
               <a 
               className="ml-10"
-              style={{ fontSize: "22px", fontWeight:'bold',color:'var(--sub11)'}}
+              style={{ fontSize: "22px", fontWeight:'bold'}}
               >テクワン株式会社</a>
 
               <a 
               className="ml-auto"
-              style={{ fontSize: "16px", fontWeight:'bold',color:'var(--sub11)'}}
+              style={{ fontSize: "16px", fontWeight:'bold'}}
               >管理者A</a>
 
               <button 

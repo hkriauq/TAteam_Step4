@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/layouts/Header";
+import { AppProvider } from "@/context/AppContext";
+
 
 
 export const metadata: Metadata = {
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="ja" style={{ backgroundColor: "var(--sub3)"}}>
       <body>
-       <Header />
-        {children}
+        <AppProvider>
+          <Header />
+            {children}
+        </AppProvider>
       </body>
     </html>
   );
