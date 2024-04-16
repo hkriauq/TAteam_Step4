@@ -11,7 +11,6 @@ interface YearMonth {
 const SelectYearMonth = () => {
     const { yearMonth , setYearMonth, setPrevYearMonth } = useAppContext();
 
-
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedYearMonth = event.target.value;
         setYearMonth({ year_month: selectedYearMonth });
@@ -40,8 +39,11 @@ const SelectYearMonth = () => {
                     value={yearMonth.year_month}
                     onChange={handleMonthChange} 
                     style={{ 
-                        fontSize: '22px', 
-                        padding:'8px 80px',
+                        fontSize: '18px', 
+                        textAlign:'center',
+                        paddingTop:'7px',
+                        paddingBottom:'7px',
+                        width:'40vh',
                         borderBottom: "2px solid var(--sub11)",
                         color:'var(--sub11)',
                         backgroundColor:'var(--sub10)'

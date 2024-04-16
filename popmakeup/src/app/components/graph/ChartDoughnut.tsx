@@ -38,22 +38,27 @@ interface Rates {
 const ChartDoughnut = () => {
     const { yearMonth ,prevYearMonth } = useAppContext();
     const [usageData, setUsageData] = useState<number[]>([300, 50, 100, 50, 20]);
-    const [usageRates, setUsageRates] = useState<Rates>({ threeOrMore: 0, averageUsage: 0 });
+    const [usageRates, setUsageRates] = useState<Rates>({ threeOrMore: 0, averageUsage: 0});
     const [prevRates, setPrevRates] = useState<Rates>({ threeOrMore: 0, averageUsage: 0 });
 
 
     useEffect(() => {
         console.log("Current yearMonth:", yearMonth.year_month);
         console.log("Previous yearMonth:", prevYearMonth);
-        const fetchUsageFrequency = async  () => {
-            try {
-                const response = await axios.get(`http://localhost:8000/usage-frequency/${yearMonth.year_month}`);
-                const data = response.data;
-                const totalUsers = data.freq.five_plus.avg + data.freq.four.avg + data.freq.thrice.avg + data.freq.twice.avg + data.freq.once.avg;
 
+        const fetchUsageFrequency = async  (month: string) => {
+            try {
+                const response = await axios.get(`http://localhost:8000/usage-frequency/${month}`);
+                const data = response.data;
+                
+                if (!data || !data.freq) {
+                    console.error('No frequency data available for the month:', month);
+                    return { threeOrMoreRate: 0, averageUsage: 0, totalUsers: 0 }; 
+                }
+
+                const totalUsers = data.freq.five_plus.avg + data.freq.four.avg + data.freq.thrice.avg + data.freq.twice.avg + data.freq.once.avg;
                 const threeOrMore = data.freq.five_plus.avg + data.freq.four.avg + data.freq.thrice.avg;
                 const threeOrMoreRate = totalUsers > 0 ? Math.round((threeOrMore / totalUsers) * 100) : 0;
-
                 const averageUsage = totalUsers > 0 ? (
                     (1 * data.freq.once.avg +
                      2 * data.freq.twice.avg +
@@ -70,17 +75,19 @@ const ChartDoughnut = () => {
 
             } catch (error) {
                 console.error('Error fetching usage frequency data:', error);
-                return { threeOrMoreRate: 0, averageUsage: 0, totalUsers: 0 }; 
+                setUsageRates({ threeOrMore: 0, averageUsage: 0 });
             }
         };
 
         //前月の情報を取得
         const updateUsageData = async () => {
-            if (yearMonth.year_month) {
+            if (yearMonth.year_month && prevYearMonth) {
                 // 現在の月と前月のデータをフェッチ
                 const currentData = await fetchUsageFrequency(yearMonth.year_month);
                 const previousData = await fetchUsageFrequency(prevYearMonth);
-    
+                console.log("Current yearMonth Data:", currentData);
+                console.log("Previous yearMonth Data:", previousData);   
+
                 // 前月と比較
                 const threeOrMoreDifference = previousData.totalUsers > 0 ?
                 ((currentData.threeOrMoreRate - previousData.threeOrMoreRate) / previousData.totalUsers * 100).toFixed(1) : '0.0';
@@ -104,10 +111,8 @@ const ChartDoughnut = () => {
                 });
             }
         };
-    
         updateUsageData();
     }, [yearMonth.year_month , prevYearMonth]);
-
 
 
     const data = {
@@ -126,9 +131,6 @@ const ChartDoughnut = () => {
         }]
     };
 
-    console.log("Usage data:", usageData); 
-
-
     const options = {
         maintainAspectRatio: false,
         responsive: true,
@@ -144,7 +146,7 @@ const ChartDoughnut = () => {
     return (
         <div className="flex flex-col aline-center justify-center mb-3">
             <div className="title flex aline-center justify-center mb-3"
-             style={{fontSize:"18px",fontWeight:"bold"}}>
+             style={{fontSize:"14px",fontWeight:"bold"}}>
                 一人あたりの週当たり利用回数
             </div>
             <div className="DoughnutChart"
@@ -166,11 +168,11 @@ const ChartDoughnut = () => {
                         alignItems: 'flex-start', 
                         height: '28vh',
                         width: '35vh',
-                        padding:'20px 0px 0px 0px',
+                        padding:'5px 0px 0px 0px',
                     }}>
                     <Doughnut data={data} options={options} />
-                    <a style={{ fontSize: '16px', padding:'10px 0px 0px 14px'}}>平均　{usageRates.averageUsage}　回　　（前月比　{usageRates.averageUsageDifference}　回）</a>
-                    <a style={{ fontSize: '16px', padding:'3px 0px 10px 14px'}}>週3回以上利用者　{usageRates.threeOrMore}　％（前月比　{usageRates.threeOrMoreDifference}％）</a>
+                    <a style={{ fontSize: '14px', padding:'0px 0px 0px 5px'}}>平均 {usageRates.averageUsage} 回 （前月比 {usageRates.averageUsageDifference}回）</a>
+                    <a style={{ fontSize: '14px', padding:'3px 0px 10px 5px'}}>週3回以上 {usageRates.threeOrMore} ％ （前月比 {usageRates.threeOrMoreDifference}％）</a>
                 </div>
             </div>
         </div>

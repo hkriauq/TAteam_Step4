@@ -14,7 +14,7 @@ const Header = () => {
           top: 0,
           left: 0,
           right: 0,
-          height: "60px",
+          height: "50px",
           width: "100%",
           display: "flex",
           alignItems: "center", 
@@ -25,12 +25,12 @@ const Header = () => {
       >
               <a 
               className="ml-10"
-              style={{ fontSize: "22px", fontWeight:'bold'}}
+              style={{ fontSize: "16px", fontWeight:'bold'}}
               >テクワン株式会社</a>
 
               <a 
               className="ml-auto"
-              style={{ fontSize: "16px", fontWeight:'bold'}}
+              style={{ fontSize: "14px", fontWeight:'bold'}}
               >管理者A</a>
 
               <button 

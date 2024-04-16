@@ -57,10 +57,10 @@ const ChartBar : React.FC= () => {
 
     useEffect(() => {
         const fetchMonthData = async () => {
-            console.log("Fetching data for yearMonth:", yearMonth.year_month); 
+            //console.log("Fetching data for yearMonth:", yearMonth.year_month); 
             try {
                 const response = await axios.get(`http://localhost:8000/usage-group/${yearMonth.year_month}`);
-                console.log("API response:", response.data);
+                //console.log("API response:", response.data);
                 const storeData = response.data.store_data as StoreData[];
                 setStoreSummaries(storeData); 
 
@@ -69,8 +69,8 @@ const ChartBar : React.FC= () => {
                     datasets: [{
                         label: '単月累計',
                         data: storeData.map(data => data.total_meals),
-                        backgroundColor: ['rgba(232, 211, 202, 0.9)'],
-                        borderColor: ['rgb(189, 163, 147)'],
+                        backgroundColor: ['rgba(220, 214, 210, 1.0)'],
+                        borderColor: ['rgb(220, 214, 210)'],
                         borderWidth: 1
                     }]
                 });
@@ -92,7 +92,7 @@ const ChartBar : React.FC= () => {
   return (
     <div className="flex flex-col aline-center justify-center mb-5">
       <div className="title flex aline-center justify-center mb-3"
-         style={{fontSize:"18px",color:"var(--sub11)",fontWeight:"bold"}}>
+         style={{fontSize:"14px",color:"var(--sub11)",fontWeight:"bold"}}>
          部署別利用食数
       </div>
       <div className="BarChart"
@@ -125,64 +125,3 @@ const ChartBar : React.FC= () => {
 };
 
 export default ChartBar
-
-
-// 全期間の年月を生成
-//const generateMonths = () => {
-    //let start = new Date(2021, 0); // 〜2021年1月
-    //let end = new Date(); // 現在
-    //let months = [];
-    //while (start <= end) {
-        //months.push(`${start.getFullYear()}${('0' + (start.getMonth() + 1)).slice(-2)}`);
-        //start.setMonth(start.getMonth() + 1);
-    //}
-    //return months;
-//};
-
-// 全期間のtotal_meals累計をstore別に算出→グラフの値に入れる
-//useEffect(() => {
-    //const fetchAllData = async () => {
-        //const months = generateMonths();
-        //let allSummaries: StoreData[] = [];
-
-        //for (const month of months) {
-            //try {
-                //const response = await axios.get(`http://localhost:8000/usage-group/${year_month}`);
-                //const storeData = response.data.store_data as StoreData[];
-                //storeData.forEach((data: StoreData) => {
-                    //const existing = allSummaries.find(s => s.store_id === data.store_id);
-                    //if (existing) {
-                        //existing.total_meals += data.total_meals;
-                        //existing.total_users += data.total_users;
-                    //} else {
-                        //allSummaries.push({ 
-                            //store_id: data.store_id, 
-                            //store: data.store,
-                            //total_meals: data.total_meals,
-                            //total_users: data.total_users
-                        //});
-                    //}
-                //});
-            //} catch (error) {
-                //console.error('Error fetching data for month:', month, error);
-            //}
-        //}
-        //setStoreSummaries(allSummaries);
-
-        //setChartData({
-            //labels: allSummaries.map(summary => {
-                //const store = stores.find(s => s.store_id === summary.store_id);
-                //return store ? store.store : `新規店舗 ${summary.store_id}`; 
-            //}),
-            //datasets: [{
-                //label: '現在までの累計',
-                //data: allSummaries.map(summary => summary.total_meals),
-                //backgroundColor:[ 'rgba(232, 211, 202, 0.8)'],
-                //borderColor: ['rgb(189, 163, 147)'],
-                //borderWidth: 1
-            //}]
-        //});
-    //};
-
-    //fetchAllData();
-//}, []);

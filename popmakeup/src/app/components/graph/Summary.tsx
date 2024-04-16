@@ -35,7 +35,7 @@ const Summary = () => {
     return (
         <div className="flex flex-col aline-center justify-center mb-3">
             <div className="title flex aline-center justify-center mb-3"
-             style={{fontSize:"18px",fontWeight:"bold"}}>
+             style={{fontSize:"14px",fontWeight:"bold"}}>
                 サマリー
             </div>
             <div className="Summary"
@@ -61,10 +61,10 @@ const Summary = () => {
                     }}> 
                 </div>*/}
 
-                <a style={{ fontSize: '20px', padding:'20px 0px 0px 0px'}}>総利用食数</a>
-                <a style={{ fontSize: '52px', padding:'3px 0px 3px 0px'}}>{summary.total_meals} 食</a>
-                <a style={{ fontSize: '20px', padding:'30px 0px 0px 0px'}}>総利用人数</a>
-                <a style={{ fontSize: '52px', padding:'3px 0px 20px 0px' }}>{summary.total_users} 人</a>
+                <a style={{ fontSize: '14px', padding:'20px 0px 0px 0px'}}>総利用食数</a>
+                <a style={{ fontSize: '40px', padding:'3px 0px 3px 0px'}}>{summary.total_meals} 食</a>
+                <a style={{ fontSize: '14px', padding:'20px 0px 0px 0px'}}>総利用人数</a>
+                <a style={{ fontSize: '40px', padding:'3px 0px 20px 0px' }}>{summary.total_users} 人</a>
             </div>
         </div>
     );

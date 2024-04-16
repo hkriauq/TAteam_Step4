@@ -11,7 +11,7 @@ export default function Home() {
   //const { userState } = useAppContext();
   
   return (
-    <div className="flex flex-col h-screen mt-24" style={{backgroundColor:"var(--sub3)"}}>
+    <div className="flex flex-col h-screen mt-20" style={{backgroundColor:"var(--sub3)"}}>
       <div className="flex justify-center items-center w-full mb-3">
         <div className="select-year-month"><SelectYearMonth /></div>
       </div>
