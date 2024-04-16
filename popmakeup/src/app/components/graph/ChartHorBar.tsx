@@ -121,7 +121,7 @@ const ChartHorBar: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col aline-center justify-center mb-3">
+        <div className="flex flex-col aline-center justify-center">
             <div className="title flex aline-center justify-center mb-3"
              style={{fontSize:"14px",fontWeight:"bold"}}>
                 年代別利用率

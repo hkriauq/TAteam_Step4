@@ -80,7 +80,7 @@ const ChartBar : React.FC= () => {
         };
 
         fetchMonthData();
-    }, [yearMonth]); 
+    }, [yearMonth.year_month]); 
     
 
     const options = {
@@ -90,7 +90,7 @@ const ChartBar : React.FC= () => {
 
 
   return (
-    <div className="flex flex-col aline-center justify-center mb-5">
+    <div className="flex flex-col aline-center justify-center">
       <div className="title flex aline-center justify-center mb-3"
          style={{fontSize:"14px",color:"var(--sub11)",fontWeight:"bold"}}>
          部署別利用食数
@@ -103,7 +103,6 @@ const ChartBar : React.FC= () => {
           height: '30vh',
           width: '123vh',
           padding: '10px 20px',
-          marginTop: '10px',
           backgroundColor: 'var(--sub10)',
           borderRadius: '10px',
           boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
