@@ -15,6 +15,7 @@ const Summary = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8000/usage-summary/${yearMonth.year_month}`);
+                //const response = await axios.get(`http://localhost:8000/monthly-summary/${yearMonth.year_month}`);
                 setSummary(response.data);
                 setLoading(false);
             } catch (err) {

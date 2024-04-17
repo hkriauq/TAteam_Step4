@@ -56,6 +56,8 @@ const ChartHorBar: React.FC = () => {
             try {
                 const response = await axios.get(`http://localhost:8000/usage-group/${yearMonth.year_month}`);
                 const ageGroupData = response.data.age_group_data as AgeGroupData[];
+                //console.log(response.data.age_group_data);
+                //console.log("Age Group Data:", ageGroupData);
                 let totalUsers = ageGroupData.reduce((sum, group) => sum + group.total_users, 0);
                 
                 const newAgeGroupData = ageGroupData.map(group => ({
@@ -121,7 +123,7 @@ const ChartHorBar: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col aline-center justify-center">
+        <div className="flex flex-col aline-center justify-center mb-3">
             <div className="title flex aline-center justify-center mb-3"
              style={{fontSize:"14px",fontWeight:"bold"}}>
                 年代別利用率

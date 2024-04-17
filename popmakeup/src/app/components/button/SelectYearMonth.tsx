@@ -48,7 +48,7 @@ const SelectYearMonth = () => {
           label="表示する年月をえらぶ！"
           onChange={handleMonthChange}
           style={{
-            fontSize: '16px',
+            fontSize: '18px',
             textAlign: 'center',
             width: '40vh',
             color: 'var(--sub11)',

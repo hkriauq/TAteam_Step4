@@ -53,7 +53,7 @@ const ChartDoughnut = () => {
                 
                 if (!data || !data.freq) {
                     console.error('No frequency data available for the month:', month);
-                    return { threeOrMoreRate: 0, averageUsage: 0, totalUsers: 0 }; 
+                    return { threeOrMoreRate: 0, averageUsage: 0 }; 
                 }
 
                 const totalUsers = data.freq.five_plus.avg + data.freq.four.avg + data.freq.thrice.avg + data.freq.twice.avg + data.freq.once.avg;

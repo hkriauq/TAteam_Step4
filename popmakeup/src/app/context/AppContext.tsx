@@ -22,15 +22,22 @@ interface StoreSummary {
 interface AgeGroupData {
     age_group: string;
     total_users: number;
-    usage_rate: string; 
+    total_meals: number;
 }
 
 interface FrequencyData {
     avg: number;
     pct: number;
-    gr: number;
+    gr: string; 
 }
-  
+
+interface FormattedResult {
+    [year_month: string]: {
+      store_data: StoreSummary[];
+      age_group_data: AgeGroupData[];
+    };
+}
+
 interface UsageFrequency {
 freq: {
     once: FrequencyData;
