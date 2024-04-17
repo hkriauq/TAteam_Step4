@@ -67,7 +67,7 @@ const ChartBar : React.FC= () => {
                 setChartData({
                     labels: storeData.map(data => data.store),
                     datasets: [{
-                        label: '単月累計',
+                        label: '単月総数',
                         data: storeData.map(data => data.total_meals),
                         backgroundColor: ['rgba(220, 214, 210, 1.0)'],
                         borderColor: ['rgb(220, 214, 210)'],

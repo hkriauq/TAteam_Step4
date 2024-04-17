@@ -5,6 +5,14 @@ import axios from 'axios';
 import { useAppContext } from "@/context/AppContext"; 
 
 
+interface YearMonth {
+    year_month: string;
+}
+
+interface UsageData {
+    total_users: number;
+    total_meals: number;
+}
 
 const Summary = () => {
     const { yearMonth, summary, setSummary } = useAppContext(); 
@@ -16,6 +24,7 @@ const Summary = () => {
             try {
                 const response = await axios.get(`http://localhost:8000/usage-summary/${yearMonth.year_month}`);
                 //const response = await axios.get(`http://localhost:8000/monthly-summary/${yearMonth.year_month}`);
+                //console.log("API response:", response.data.summary)
                 setSummary(response.data);
                 setLoading(false);
             } catch (err) {

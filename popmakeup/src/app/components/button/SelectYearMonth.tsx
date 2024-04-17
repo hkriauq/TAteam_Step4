@@ -54,7 +54,19 @@ const SelectYearMonth = () => {
             color: 'var(--sub11)',
             backgroundColor: 'var(--sub10)'
           }}
-        >
+          >
+          {/*<MenuItem value="202412">2024年12月</MenuItem>
+          <MenuItem value="202411">2024年11月</MenuItem>
+          <MenuItem value="202410">2024年10月</MenuItem>
+          <MenuItem value="202409">2024年9月</MenuItem>
+          <MenuItem value="202408">2024年8月</MenuItem>
+          <MenuItem value="202407">2024年7月</MenuItem>
+          <MenuItem value="202406">2024年6月</MenuItem>
+          <MenuItem value="202405">2024年5月</MenuItem>
+          <MenuItem value="202404">2024年4月</MenuItem>
+          <MenuItem value="202403">2024年3月</MenuItem>
+          <MenuItem value="202402">2024年2月</MenuItem>
+        <MenuItem value="202401">2024年1月</MenuItem>*/}
           <MenuItem value="202312">2023年12月</MenuItem>
           <MenuItem value="202311">2023年11月</MenuItem>
           <MenuItem value="202310">2023年10月</MenuItem>
