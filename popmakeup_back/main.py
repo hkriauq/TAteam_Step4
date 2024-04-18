@@ -5,20 +5,38 @@
 
 from fastapi import FastAPI
 import json
+from fastapi.middleware.cors import CORSMiddleware
+
+# CORSを許可するオリジンのリスト
+origins = [
+    "http://localhost:3000/",
+    # "https://api.example.com"
+]
 
 app = FastAPI()
 
+# CORSミドルウェアの設定
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins="*",  # 全てのオリジンを許可する場合は ["*"]
+    allow_credentials=True,
+    allow_methods=["*"],  # または特定のHTTPメソッド ['GET', 'POST', 'PUT']
+    allow_headers=["*"],  # または特定のヘッダー ['X-Custom-Header']
+)
+
+
 # JSONファイルからダミーデータを読み込む
-with open('dummy_data.json', 'r') as file:
+with open("dummy_data.json", "r") as file:
     dummy_data = json.load(file)
 
 # JSONファイルから使用頻度データを読み込む
-with open('usage_frequency_data.json', 'r') as file:
+with open("usage_frequency_data.json", "r") as file:
     usage_frequency_data = json.load(file)
 
 # ダミーデータの読み込み
-with open('group_data.json', 'r') as file:
+with open("group_data.json", "r") as file:
     group_data = json.load(file)
+
 
 @app.get("/usage-summary/{year_month}")
 async def get_usage_summary(year_month: str):
@@ -29,7 +47,7 @@ async def get_usage_summary(year_month: str):
     else:
         # 該当するデータがない場合はエラーメッセージを返す
         return {"error": "Data not found for the specified year_month."}
-    
+
 
 @app.get("/usage-frequency/{year_month}")
 async def get_usage_frequency(year_month: str):
@@ -40,7 +58,8 @@ async def get_usage_frequency(year_month: str):
     else:
         # 該当するデータがない場合はエラーメッセージを返す
         return {"error": "Data not found for the specified year_month."}
-    
+
+
 @app.get("/usage-group/{year_month}")
 async def get_usage_group(year_month: str):
     # year_monthがダミーデータに存在するかチェック

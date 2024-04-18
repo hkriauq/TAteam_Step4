@@ -1,5 +1,5 @@
 # main.py : FAST API サンプルコード
-# uvicorn main:app --reload で起動
+# uvicorn main_SQL:app --reload で起動
 # http://127.0.0.1:8000/docs で仕様確認
 # 年月をstr 数値6桁で GET送信, 各レスポンスが返ってくるアプリ
 
@@ -12,10 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 
 # CORSを許可するオリジンのリスト
-origins = [
-    "http://localhost:3000",
-    "https://api.example.com"
-]
+origins = ["http://localhost:3000", "https://api.example.com"]
 
 app = FastAPI()
 engine = create_engine("sqlite:///pop-make-up_DB_add.db")
@@ -29,14 +26,14 @@ app.add_middleware(
     allow_headers=["*"],  # または特定のヘッダー ['X-Custom-Header']
 )
 
+
 # データフレームの辞書化
 def execute_query(query: str) -> Optional[dict]:
     """SQLクエリを実行し、結果を辞書形式で返す関数"""
     df = pd.read_sql_query(query, engine)
     if df.empty:
         return None
-    return df.to_dict(orient='records')
-
+    return df.to_dict(orient="records")
 
 
 ## API①
@@ -52,15 +49,17 @@ def build_monthly_summary_query(formatted_year_month: str) -> str:
     GROUP BY strftime('%Y-%m', DATE)
     """
 
+
 ## API②
 def get_total_users_count() -> int:
     """ユーザーの総数を取得する関数"""
     query = "SELECT COUNT(*) AS TotalUserCount FROM users"
     result = execute_query(query)
     if result:
-        return result[0]['TotalUserCount']
+        return result[0]["TotalUserCount"]
     else:
         return 0
+
 
 def build_usage_frequency_query(formatted_year_month: str) -> str:
     """使用頻度に関するSQLクエリを構築する関数。週利用回数が0のユーザー数も正確に計算する。"""
@@ -110,12 +109,12 @@ def build_usage_frequency_query(formatted_year_month: str) -> str:
         {total_users_count} - (SELECT SUM(UsersCount) FROM CategoryCounts) AS UsersCount
     """
 
+
 def get_previous_month(year_month: str) -> str:
     """指定された年月の前月を計算する"""
     year, month = int(year_month[:4]), int(year_month[4:6])
     previous_month_date = datetime(year, month, 1) - timedelta(days=1)
-    return previous_month_date.strftime('%Y%m')
-
+    return previous_month_date.strftime("%Y%m")
 
 
 def calculate_growth_rate(current_count: int, previous_count: Optional[int]) -> float:
@@ -129,28 +128,41 @@ def calculate_growth_rate(current_count: int, previous_count: Optional[int]) -> 
     return growth_rate
 
 
-def format_usage_frequency_result(year_month: str, current_result: list, previous_result: list) -> dict:
+def format_usage_frequency_result(
+    year_month: str, current_result: list, previous_result: list
+) -> dict:
     # 先月のデータをカテゴリごとにマッピング
-    previous_data_map = {item['UsageCategory']: item for item in previous_result}
+    previous_data_map = {item["UsageCategory"]: item for item in previous_result}
 
     # カテゴリのリスト
-    categories = ['zero', 'once', 'twice', 'thrice', 'four', 'five_plus']
+    categories = ["zero", "once", "twice", "thrice", "four", "five_plus"]
 
     # 全ユーザー数の合計を計算。'UsersCount'がNoneの場合は0を使用
-    total_users = sum(item['UsersCount'] if item['UsersCount'] is not None else 0 for item in current_result)
+    total_users = sum(
+        item["UsersCount"] if item["UsersCount"] is not None else 0
+        for item in current_result
+    )
 
     # 年月キーを削除し、直接"freq"オブジェクトを構築
     formatted_data = {"freq": {}}
 
     for category in categories:
-        current_item = next((item for item in current_result if item['UsageCategory'] == category), None)
+        current_item = next(
+            (item for item in current_result if item["UsageCategory"] == category), None
+        )
         previous_item = previous_data_map.get(category, None)
 
-        current_count = current_item['UsersCount'] if current_item and current_item['UsersCount'] is not None else 0
+        current_count = (
+            current_item["UsersCount"]
+            if current_item and current_item["UsersCount"] is not None
+            else 0
+        )
 
         # 成長率を計算。前月のデータがない場合は0とする
-        if previous_item and previous_item.get('UsersCount') is not None:
-            growth_rate = calculate_growth_rate(current_count, previous_item['UsersCount'])
+        if previous_item and previous_item.get("UsersCount") is not None:
+            growth_rate = calculate_growth_rate(
+                current_count, previous_item["UsersCount"]
+            )
         else:
             growth_rate = 0
 
@@ -164,12 +176,10 @@ def format_usage_frequency_result(year_month: str, current_result: list, previou
         formatted_data["freq"][category] = {
             "avg": current_count,
             "pct": pct,
-            "gr": growth_rate
+            "gr": growth_rate,
         }
 
     return formatted_data
-
-
 
 
 ## API③
@@ -189,6 +199,7 @@ def build_age_group_query(formatted_year_month: str) -> str:
         strftime('%Y-%m', DATE), age_group
     """
 
+
 def build_store_summary_query(formatted_year_month: str) -> str:
     """店舗サマリーのSQLクエリを構築する関数"""
     return f"""
@@ -207,11 +218,11 @@ def build_store_summary_query(formatted_year_month: str) -> str:
     """
 
 
-
-# API①  
+# API①
 @app.get("/")
 async def main():
     return {"message": "Hello World"}
+
 
 @app.get("/monthly-summary/{year_month}")
 async def get_monthly_summary(year_month: str):
@@ -219,26 +230,26 @@ async def get_monthly_summary(year_month: str):
     formatted_year_month = f"{year_month[:4]}-{year_month[4:6]}"
     query = build_monthly_summary_query(formatted_year_month)
     result = execute_query(query)
-    
+
     if not result:
         return {"error": "No data found for the specified year_month."}
-    
+
     formatted_result = {
-                            "total_users": result[0]['Total_Users'],
-                            "total_meals":result[0]['Total_Stocks_Used']
-                        }
+        "total_users": result[0]["Total_Users"],
+        "total_meals": result[0]["Total_Stocks_Used"],
+    }
     return formatted_result
 
 
-# API②   
+# API②
 @app.get("/usage-frequency/{year_month}")
 async def get_usage_frequency(year_month: str):
     """
     指定された年月の使用頻度データを取得し、整形して返すエンドポイント。
-    
+
     Args:
         year_month (str): 'YYYYMM'形式の年月。
-    
+
     Returns:
         dict: 整形された使用頻度データ。
     """
@@ -247,17 +258,19 @@ async def get_usage_frequency(year_month: str):
     # 前月を計算
     prev_year_month = get_previous_month(year_month)
     formatted_prev_year_month = f"{prev_year_month[:4]}-{prev_year_month[4:6]}"
-    
+
     # 現在の月と前月のクエリを構築
     current_query = build_usage_frequency_query(formatted_year_month)
     prev_query = build_usage_frequency_query(formatted_prev_year_month)
-    
+
     # クエリを実行して結果を取得
     current_result = execute_query(current_query)
     previous_result = execute_query(prev_query)
 
     # 前月のデータがない場合でも処理を続行
-    formatted_result = format_usage_frequency_result(year_month, current_result, previous_result if previous_result else [])
+    formatted_result = format_usage_frequency_result(
+        year_month, current_result, previous_result if previous_result else []
+    )
     return formatted_result
 
 
@@ -280,23 +293,23 @@ async def get_usage_group(year_month: str):
 
     # 結果を group_data.json と同じ形式で整形
     formatted_result = {
-            "store_data": [
-                {
-                    "store_id": item["STORE_ID"],
-                    "store": item["STORE"],
-                    "total_users": item["Users_Per_Store"],
-                    "total_meals": item["Stocks_Used_Per_Store"]
-                }
-                for item in store_summary_result
-            ],
-            "age_group_data": [
-                {
-                    "age_group": item["age_group"],
-                    "total_users": item["Users_Per_Age_Group"],
-                    "total_meals": item["Stocks_Used_Per_Age_Group"]
-                }
-                for item in age_group_result
-            ]
+        "store_data": [
+            {
+                "store_id": item["STORE_ID"],
+                "store": item["STORE"],
+                "total_users": item["Users_Per_Store"],
+                "total_meals": item["Stocks_Used_Per_Store"],
+            }
+            for item in store_summary_result
+        ],
+        "age_group_data": [
+            {
+                "age_group": item["age_group"],
+                "total_users": item["Users_Per_Age_Group"],
+                "total_meals": item["Stocks_Used_Per_Age_Group"],
+            }
+            for item in age_group_result
+        ],
     }
 
     return formatted_result
